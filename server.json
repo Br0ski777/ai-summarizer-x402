@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.Br0ski777/ai-summarizer",
+  "title": "AI Text Summarizer API",
+  "description": "Summarize text or URLs into key points with compression ratio and reading time. x402 USDC.",
+  "version": "1.0.0",
+  "websiteUrl": "https://github.com/Br0ski777/ai-summarizer-x402",
+  "repository": {
+    "url": "https://github.com/Br0ski777/ai-summarizer-x402",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "sse",
+      "url": "https://ai-summarizer-x402-production.up.railway.app/mcp"
+    }
+  ]
+}
