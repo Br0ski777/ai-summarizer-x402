@@ -34,6 +34,49 @@ Do NOT use for full content extraction -- use web_scrape_to_markdown. Do NOT use
         },
         required: ["text"],
       },
+      outputSchema: {
+          "type": "object",
+          "properties": {
+            "summary": {
+              "type": "string",
+              "description": "Generated text summary"
+            },
+            "sentences": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "sentence": {
+                    "type": "string"
+                  },
+                  "score": {
+                    "type": "number"
+                  }
+                }
+              },
+              "description": "Ranked sentences with relevance scores"
+            },
+            "wordCount": {
+              "type": "number",
+              "description": "Word count of original text"
+            },
+            "summaryWordCount": {
+              "type": "number",
+              "description": "Word count of summary"
+            },
+            "compressionRatio": {
+              "type": "number",
+              "description": "Compression ratio"
+            },
+            "sourceUrl": {
+              "type": "string",
+              "description": "Source URL if summarizing from URL"
+            }
+          },
+          "required": [
+            "summary"
+          ]
+        },
     },
     {
       method: "GET",
@@ -63,6 +106,20 @@ Do NOT use for full content extraction -- use web_scrape_to_markdown. Do NOT use
           maxLength: { type: "number", description: "Maximum summary length in words (default 200)" },
         },
         required: ["url"],
+      },
+      outputSchema: {
+        type: "object",
+        properties: {
+          summary: { type: "string", description: "Generated text summary" },
+          keyPoints: { type: "array", items: { type: "string" }, description: "Key takeaways" },
+          wordCountOriginal: { type: "number", description: "Word count of original page" },
+          wordCountSummary: { type: "number", description: "Word count of summary" },
+          reductionPercent: { type: "number", description: "Percentage of text reduced" },
+          readingTimeMinutes: { type: "number", description: "Estimated reading time" },
+          title: { type: "string", description: "Page title" },
+          sourceUrl: { type: "string", description: "Source URL summarized" },
+        },
+        required: ["summary"],
       },
     },
   ],
