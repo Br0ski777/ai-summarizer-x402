@@ -1,6 +1,21 @@
 import type { Hono } from "hono";
 import { parse } from "node-html-parser";
 
+
+// ATXP: requirePayment only fires inside an ATXP context (set by atxpHono middleware).
+// For raw x402 requests, the existing @x402/hono middleware handles the gate.
+// If neither protocol is active (ATXP_CONNECTION unset), tryRequirePayment is a no-op.
+async function tryRequirePayment(price: number): Promise<void> {
+  if (!process.env.ATXP_CONNECTION) return;
+  try {
+    const { requirePayment } = await import("@atxp/server");
+    const BigNumber = (await import("bignumber.js")).default;
+    await requirePayment({ price: BigNumber(price) });
+  } catch (e: any) {
+    if (e?.code === -30402) throw e;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Text extraction from HTML
 // ---------------------------------------------------------------------------
@@ -203,6 +218,7 @@ function summarizeText(text: string, maxLength: number = 200): SummaryResult {
 export function registerRoutes(app: Hono) {
   // POST /api/summarize — summarize raw text
   app.post("/api/summarize", async (c) => {
+    await tryRequirePayment(0.01);
     const body = await c.req.json<{ text?: string; maxLength?: number }>();
     if (!body.text || typeof body.text !== "string") {
       return c.json({ error: "Missing 'text' field in request body" }, 400);
@@ -217,6 +233,7 @@ export function registerRoutes(app: Hono) {
 
   // GET /api/summarize?url=...&maxLength=... — fetch URL and summarize
   app.get("/api/summarize", async (c) => {
+    await tryRequirePayment(0.015);
     const url = c.req.query("url");
     if (!url) {
       return c.json({ error: "Missing 'url' query parameter" }, 400);
