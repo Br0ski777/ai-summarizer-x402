@@ -9,7 +9,7 @@ export const API_CONFIG: ApiConfig = {
     {
       method: "POST",
       path: "/api/summarize",
-      price: "$0.01",
+      price: "$0.03",
       description: "Summarize raw text into key points",
       toolName: "ai_summarize_text",
       toolDescription: `Use this when you need to summarize long text into concise key points. Returns a structured summary with bullet points and reading metrics.
@@ -81,7 +81,7 @@ Do NOT use for full content extraction -- use web_scrape_to_markdown. Do NOT use
     {
       method: "GET",
       path: "/api/summarize",
-      price: "$0.015",
+      price: "$0.04",
       description: "Fetch a URL and summarize its content",
       toolName: "ai_summarize_url",
       toolDescription: `Use this when you need to summarize a web page by URL. Fetches the page, extracts text, and returns a structured summary with key points and reading metrics.
